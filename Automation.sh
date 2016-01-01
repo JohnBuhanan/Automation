@@ -17,7 +17,7 @@ launch() {
 }
 
 testLaunch() {
-	echo test function
+	echo test func
 }
 
 while getopts tl args
