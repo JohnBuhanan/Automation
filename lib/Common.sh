@@ -8,6 +8,17 @@
 lgHomeScreenActivity="com.lge.launcher2.Launcher"
 usbSettingsActivity="com.android.settings.UsbSettings"
 
+screenDensity="$(getprop ro.sf.lcd_density)"
+
+lgFuelScreenXResolution=320
+lgFuelScreenYResolution=480
+
+wmSize=$(wm size)
+wmSize=${wmSize:15}
+
+actualScreenXResolution="${wmSize%x*}"
+actualScreenYResolution="${wmSize#*x}"
+
 checktime() {
 	# extract hour from UNIX date
 	local H=$(date +%H)
@@ -27,11 +38,27 @@ advancedTouch() {
 	normalTouch $(( $x+$rand1 )) $(( $y+$rand2 ))
 }
 
+translateTouch() {
+	local inflate=1000000
+	
+	let lgFuelX=$1*$inflate
+	let lgFuelY=$2*$inflate
+	
+	let xScreenPercent=$lgFuelX/$lgFuelScreenXResolution
+	let yScreenPercent=$lgFuelY/$lgFuelScreenYResolution
+	
+	let actualX=$xScreenPercent*$actualScreenXResolution/$inflate
+	
+	let actualY=$yScreenPercent*$actualScreenYResolution/$inflate
+	
+	input tap $actualX $actualY
+}
+
 normalTouch() {
 	local x=$1
 	local y=$2
 	
-	input tap $x $y
+	translateTouch $x $y
 }
 
 boundedTouch() {
