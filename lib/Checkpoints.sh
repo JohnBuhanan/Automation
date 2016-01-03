@@ -7,5 +7,5 @@ launchCheckpoints() {
 	sleep 12
 	normalTouch 200 457
 	sleep 8
-	normalTouch 80 145
+	normalTouch 80 140
 }
