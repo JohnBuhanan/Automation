@@ -52,7 +52,7 @@ getGitDate() {
 }
 
 checkForUpdates() {
-	# Curl on github api. Get the updated_at field
+	# Curl on github api. Get the updated_at field 
 	local gitDateSeconds=$(getGitDate)
 	
 	local updatedAtFile=${automationPath}/updatedAt
