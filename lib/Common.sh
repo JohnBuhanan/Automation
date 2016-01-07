@@ -31,7 +31,7 @@ checktime() {
 
 updateAndRelaunch() {
 	local gitDateSeconds=$1
-	echo NEW VERSION AVAILABLE! UPDATING!
+	echo NEW VERSION AVAILABLE! UPDATING! 
 	# Do update
 	sh $automationPath/UpdateAutomation.sh
 	# Log last update time of git download.
