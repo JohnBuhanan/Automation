@@ -38,6 +38,7 @@ updateAndRelaunch() {
 	echo $gitDateSeconds > $automationPath/updatedAt
 	# Relaunch Automation
 	sh $automationShellPath/Automation.sh -l &
+	sleep 2
 	exit 1
 }
 
