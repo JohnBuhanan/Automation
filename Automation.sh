@@ -8,6 +8,7 @@ automationShellPath=${automationPath}/Automation
 #$1=flag to run everything.
 launch() {
 	# checktime
+	checkForUpdates
 	killAllApps
 	sleep 3
 	stop media && start media
@@ -17,7 +18,11 @@ launch() {
 }
 
 testLaunch() {
-	echo test func
+	# echo test func
+	checkForUpdates
+	 
+	# local test1=$(getGitDate)
+	
 }
 
 while getopts tl args

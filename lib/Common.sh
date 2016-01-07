@@ -29,6 +29,51 @@ checktime() {
 	fi
 }
 
+updateAndRelaunch() {
+	local gitDateSeconds=$1
+	echo NEW VERSION AVAILABLE! UPDATING!
+	# Do update
+	sh $automationPath/UpdateAutomation.sh
+	# Log last update time of git download.
+	echo $gitDateSeconds > $automationPath/updatedAt
+	# Relaunch Automation
+	sh $automationShellPath/Automation.sh -l &
+	exit 1
+}
+
+getGitDate() {
+	local updatedAtJson=$(curl -k "https://api.github.com/repos/johnbuns/Automation" | grep -o "\"updated_at\": \".*\",")
+	
+	updatedAtJson="${updatedAtJson:15}"
+	updatedAtJson="${updatedAtJson/Z\",/}"
+	updatedAtJson="${updatedAtJson/T/ }"
+	
+	echo $(date --date="${updatedAtJson}" +%s)
+}
+
+checkForUpdates() {
+	# Curl on github api. Get the updated_at field
+	local gitDateSeconds=$(getGitDate)
+	
+	local updatedAtFile=${automationPath}/updatedAt
+	
+	# Check for updatedAt file.
+	if [ -e "$updatedAtFile" ]; then
+		echo FILE EXISTS!
+		
+		# Read the number of seconds from it.
+		local fileDateSeconds=$(cat $updatedAtFile)
+		
+		# Current version is out of date if number of seconds are less.
+		if [ $gitDateSeconds -gt $fileDateSeconds ]; then
+			updateAndRelaunch $gitDateSeconds
+		fi
+	else
+		echo FILE DOES NOT EXIST!
+		updateAndRelaunch $gitDateSeconds
+	fi
+}
+
 advancedTouch() {
 	local x=$1
 	local y=$2
