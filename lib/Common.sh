@@ -48,7 +48,7 @@ getGitDate() {
 	updatedAtJson="${updatedAtJson/Z\",/}"
 	updatedAtJson="${updatedAtJson/T/ }"
 	
-	echo $(date --date="${updatedAtJson}" +%s)
+	echo $(/system/xbin/date --date="${updatedAtJson}" +%s)
 }
 
 checkForUpdates() {
