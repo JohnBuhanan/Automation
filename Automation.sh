@@ -1,9 +1,10 @@
 set -x
 
-automationPath=/data/Automation
-automationShellPath=${automationPath}/Automation
-
 . ${automationShellPath}/lib/Common.sh
+
+checkForUpdatesAndLaunch() {
+	sh /data/Automation/UpdateAutomation.sh && launch
+}
 
 #$1=flag to run everything.   
 launch() {
@@ -19,7 +20,7 @@ launch() {
 
 testLaunch() {
 	# echo test func
-	checkForUpdates
+	checkForUpdatesAndLaunch
 	 
 	# local test1=$(getGitDate)
 	
