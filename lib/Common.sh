@@ -44,7 +44,7 @@ updateAndRelaunch() {
 getGitDate() {
 	local updatedAtJson=$(curl -k "https://api.github.com/repos/johnbuns/Automation" | grep -o "\"pushed_at\": \".*\",")
 	
-	updatedAtJson="${updatedAtJson:15}"
+	updatedAtJson="${updatedAtJson:14}"
 	updatedAtJson="${updatedAtJson/Z\",/}"
 	updatedAtJson="${updatedAtJson/T/ }"
 	
