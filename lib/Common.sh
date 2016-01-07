@@ -37,9 +37,9 @@ updateAndRelaunch() {
 	# Log last update time of git download.
 	echo $gitDateSeconds > $automationPath/updatedAt
 	# Relaunch Automation
-	nohup sh $automationShellPath/Automation.sh -l &
-	sleep 2
-	exit 1
+	exit 1 && sh $automationShellPath/Automation.sh -l &
+	# sleep 2
+	# exit 1
 }
 
 getGitDate() {
