@@ -22,7 +22,7 @@ checkForUpdatesAndLaunch() {
 #$1=flag to run everything.
 launch() {
 	# checktime
-	echo VERSION 3
+	echo VERSION 4
 	# killAllApps
 	# sleep 3
 	# stop media && start media
