@@ -19,7 +19,7 @@ checkForUpdatesAndLaunch() {
 
 #$1=flag to run everything.
 launch() {
-	# checktime
+	# checktime 
 	# echo VERSION 3
 	killAllApps
 	sleep 3
