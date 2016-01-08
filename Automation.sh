@@ -13,7 +13,7 @@ checkForUpdatesAndLaunch() {
 	if [ before -eq after ]; then
 		launch
 	else
-		nohup launch &
+		nohup sh ${automationShellPath}/Automation.sh -l &
 		sleep 5
 		exit 0
 	fi
