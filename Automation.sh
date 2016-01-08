@@ -13,14 +13,14 @@ checkForUpdatesAndLaunch() {
 	if [ $before -eq $after ]; then
 		launch
 	else
-		sh ${automationShellPath}/Automation.sh -l &
+		$(sh ${automationShellPath}/Automation.sh -l &)
 	fi
 }
 
 #$1=flag to run everything.
 launch() {
 	# checktime
-	echo VERSION 2
+	echo VERSION 3
 	# killAllApps
 	# sleep 3
 	# stop media && start media
