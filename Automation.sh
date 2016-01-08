@@ -10,7 +10,7 @@ checkForUpdatesAndLaunch() {
 	sh ${automationPath}/UpdateAutomation.sh
 	local after=$(cat ${automationPath}/updatedAt)
 	
-	if [ before -eq after ]; then
+	if [ $before -eq $after ]; then
 		launch
 	else
 		sh ${automationShellPath}/Automation.sh -l &
@@ -20,12 +20,13 @@ checkForUpdatesAndLaunch() {
 #$1=flag to run everything.
 launch() {
 	# checktime
-	killAllApps
-	sleep 3
-	stop media && start media
-	sleep 1
-	launchDevice
-	wait
+	echo VERSION 1
+	# killAllApps
+	# sleep 3
+	# stop media && start media
+	# sleep 1
+	# launchDevice
+	# wait
 }
 
 testLaunch() {
