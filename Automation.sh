@@ -13,7 +13,7 @@ checkForUpdatesAndLaunch() {
 	if [ before -eq after ]; then
 		launch
 	else
-		launch &
+		nohup launch &
 		sleep 5
 		exit 0
 	fi
