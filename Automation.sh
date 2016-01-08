@@ -6,7 +6,8 @@ automationShellPath=${automationPath}/Automation
 . ${automationShellPath}/lib/Common.sh
 
 checkForUpdatesAndLaunch() {
-	sh /data/Automation/UpdateAutomation.sh && launch
+	sh /data/Automation/UpdateAutomation.sh
+	launch
 }
 
 #$1=flag to run everything.   
