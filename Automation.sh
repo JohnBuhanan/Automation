@@ -21,10 +21,11 @@ checkForUpdatesAndLaunch() {
 #$1=flag to run everything.
 launch() {
 	# checktime
-	killAllApps
-	sleep 3
-	stop media && start media
-	sleep 1
+	echo VERSION 1
+	# killAllApps
+	# sleep 3
+	# stop media && start media
+	# sleep 1
 	# launchDevice
 	wait
 }
