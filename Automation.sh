@@ -6,8 +6,16 @@ automationShellPath=${automationPath}/Automation
 . ${automationShellPath}/lib/Common.sh
 
 checkForUpdatesAndLaunch() {
+	local before=$(cat ${automationPath}/updatedAt)
 	sh ${automationPath}/UpdateAutomation.sh
-	launch
+	local after=$(cat ${automationPath}/updatedAt)
+	
+	if [ before -eq after ]; then
+		launch
+	else
+		sleep 5 && launch &
+		exit 0
+	fi
 }
 
 #$1=flag to run everything.
