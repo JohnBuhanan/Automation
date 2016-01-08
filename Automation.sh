@@ -1,5 +1,8 @@
 set -x
 
+automationPath=/data/Automation
+automationShellPath=${automationPath}/Automation
+
 . ${automationShellPath}/lib/Common.sh
 
 checkForUpdatesAndLaunch() {
