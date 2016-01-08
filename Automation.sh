@@ -6,14 +6,13 @@ automationShellPath=${automationPath}/Automation
 . ${automationShellPath}/lib/Common.sh
 
 checkForUpdatesAndLaunch() {
-	sh /data/Automation/UpdateAutomation.sh
+	sh ${automationPath}/UpdateAutomation.sh
 	launch
 }
 
 #$1=flag to run everything.   
 launch() {
 	# checktime
-	checkForUpdates
 	killAllApps
 	sleep 3
 	stop media && start media
@@ -38,7 +37,7 @@ do
             ;;
 		l)
 			# The main automation program.
-			launch
+			checkForUpdatesAndLaunch
 			;;
         ?)
             exit 1
