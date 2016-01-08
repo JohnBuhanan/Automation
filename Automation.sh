@@ -25,7 +25,7 @@ launch() {
 	sleep 3
 	stop media && start media
 	sleep 1
-	launchDevice
+	# launchDevice
 	wait
 }
 
