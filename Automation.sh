@@ -10,7 +10,7 @@ checkForUpdatesAndLaunch() {
 	launch
 }
 
-#$1=flag to run everything.   
+#$1=flag to run everything.
 launch() {
 	# checktime
 	killAllApps
