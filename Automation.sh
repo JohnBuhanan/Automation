@@ -6,7 +6,7 @@ automationShellPath=${automationPath}/Automation
 . ${automationShellPath}/lib/Common.sh
 
 launch() {
-	# checktime
+	# checktime 
 	killAllApps
 	sleep 3
 	stop media && start media
