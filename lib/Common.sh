@@ -32,20 +32,25 @@ checktime() {
 	fi
 }
 
-advancedTouch() {
-	local x=$1
-	local y=$2
-	local rand1=$(shuf -i 0-10 -n 1)-5
-	local rand2=$(shuf -i 0-10 -n 1)-5
+# $1=originalValue, $2=deviation
+plusOrMinus() {
+	local originalValue=$1
+	local deviation=$2
 	
-	normalTouch $(( $x+$rand1 )) $(( $y+$rand2 ))
+	local rand=$(randBetween 0 $((deviation * 2)))
+	rand=$rand-$deviation
+	
+	echo $(($originalValue+$rand))
 }
 
-translateTouch() {
-	local actualX=$(translateX $1)
-	local actualY=$(translateY $2)
+# $1=firstInt, $2=secondInt
+randBetween() {
+	local firstInt=$1
+	local secondInt=$2
 	
-	input tap $actualX $actualY
+	local rand1=$(shuf -i $firstInt-$secondInt -n 1)
+	
+	echo $rand1
 }
 
 # $1=x
@@ -66,6 +71,23 @@ translateY() {
 	echo $actualY
 }
 
+translateTouch() {
+	local actualX=$(translateX $1)
+	local actualY=$(translateY $2)
+	
+	input tap $actualX $actualY
+}
+
+advancedSwipe() {
+	local x1=$(plusOrMinus $1 10)
+	local y1=$(plusOrMinus $2 10)
+	local x2=$(plusOrMinus $3 10)
+	local y2=$(plusOrMinus $4 10)
+	local duration=$5
+	
+	translateSwipe $x1 $y1 $x2 $y2 $duration
+}
+
 translateSwipe() {
 	local x1=$(translateX $1)
 	local y1=$(translateY $2)
@@ -81,6 +103,13 @@ normalTouch() {
 	local y=$2
 	
 	translateTouch $x $y
+}
+
+advancedTouch() {
+	local x=$(plusOrMinus $1 5)
+	local y=$(plusOrMinus $2 5)
+	
+	normalTouch $x $y
 }
 
 boundedTouch() {

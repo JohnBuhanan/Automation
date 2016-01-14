@@ -13,7 +13,7 @@ launchScreen() {
 			sleep 1
 			input keyevent KEYCODE_POWER # wakeup
 			sleep 2
-			translateSwipe 150 434 304 434 750
+			advancedSwipe 152 438 304 438 750
 			sleep 8
 		else 
 			echo "Screen is already on. Turning off."
