@@ -4,6 +4,7 @@
 . ${automationShellPath}/lib/PopQuiz.sh
 . ${automationShellPath}/lib/Checkpoints.sh
 . ${automationShellPath}/lib/PerkTV.sh
+. ${automationShellPath}/lib/Screen.sh
 
 lgHomeScreenActivity="com.lge.launcher2.Launcher"
 usbSettingsActivity="com.android.settings.UsbSettings"
@@ -18,6 +19,8 @@ wmSize=${wmSize:15}
 
 actualScreenXResolution="${wmSize%x*}"
 actualScreenYResolution="${wmSize#*x}"
+
+inflateValue=1000000
 
 checktime() {
 	# extract hour from UNIX date
@@ -39,19 +42,38 @@ advancedTouch() {
 }
 
 translateTouch() {
-	local inflate=1000000
-	
-	let lgFuelX=$1*$inflate
-	let lgFuelY=$2*$inflate
-	
-	let xScreenPercent=$lgFuelX/$lgFuelScreenXResolution
-	let yScreenPercent=$lgFuelY/$lgFuelScreenYResolution
-	
-	let actualX=$xScreenPercent*$actualScreenXResolution/$inflate
-	
-	let actualY=$yScreenPercent*$actualScreenYResolution/$inflate
+	local actualX=$(translateX $1)
+	local actualY=$(translateY $2)
 	
 	input tap $actualX $actualY
+}
+
+# $1=x
+translateX() {
+	let lgFuelX=$1*$inflateValue
+	let xScreenPercent=$lgFuelX/$lgFuelScreenXResolution
+	let actualX=$xScreenPercent*$actualScreenXResolution/$inflateValue
+	
+	echo $actualX
+}
+
+# $1=x
+translateY() {
+	let lgFuelY=$1*$inflateValue
+	let yScreenPercent=$lgFuelY/$lgFuelScreenYResolution
+	let actualY=$yScreenPercent*$actualScreenYResolution/$inflateValue
+	
+	echo $actualY
+}
+
+translateSwipe() {
+	local x1=$(translateX $1)
+	local y1=$(translateY $2)
+	local x2=$(translateX $3)
+	local y2=$(translateY $4)
+	local duration=$5
+	
+	input touchscreen swipe $x1 $y1 $x2 $y2 $duration
 }
 
 normalTouch() {
@@ -88,6 +110,14 @@ launchApp() {
 	adb -s $device shell am start -n "$package/$activity"
 }
 
+killLastSession() {
+	# echo $$
+	local file=/data/Automation/lastSessionPid
+	local lastSessionPid=$(cat $file)
+	kill -15 $lastSessionPid
+	echo $$ > $file
+}
+
 killAllApps() {
 	am force-stop $wordSearchPackage >/dev/null 2>&1 &
 	am force-stop $jetpackJourneyPackage >/dev/null 2>&1 &
@@ -96,12 +126,30 @@ killAllApps() {
 	am force-stop $perkTVLivePackage >/dev/null 2>&1 &
 	am force-stop $checkpointsPackage >/dev/null 2>&1 &
 	am force-stop $perkTVPackage >/dev/null 2>&1 &
+	am force-stop $screenPackage >/dev/null 2>&1 &
+	killLastSession
 	wait
 }
 
-launchDevice() {
-	# Make sure it's on home?
+isScreenOn() {
+	echo $(dumpsys power | grep mScreenOn= | grep -oE '(true|false)')
+}
+
+ensureScreenOn() {
+	if [ $(isScreenOn) == false ]; then
+		input keyevent KEYCODE_POWER
+	fi
+}
+
+goHome() {
 	input keyevent KEYCODE_HOME
+}
+
+launchDevice() {
+	# Make sure it's on.
+	ensureScreenOn
+	# Make sure it's on home?
+	goHome
 	sleep 1
 	# Click in top left corner.
 	normalTouch 50 70
@@ -132,6 +180,11 @@ launchDevice() {
 	
 	if [ "$activity" = "$jetpackJourneyPressActivity" ]; then
         launchJetpackJourney
+		return
+    fi
+	
+	if [ "$activity" = "$screenPressActivity" ]; then
+        launchScreen
 		return
     fi
 }
