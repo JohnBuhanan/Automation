@@ -190,8 +190,18 @@ isScreenOn() {
 }
 
 ensureScreenOn() {
-	if [ $(isScreenOn) == false ]; then
+	ensureScreen true
+}
+
+ensureScreenOff() {
+	ensureScreen false
+}
+
+#$1=onOff
+ensureScreen() {
+	if [ $(isScreenOn) != $1 ]; then
 		input keyevent KEYCODE_POWER
+		sleep 1
 	fi
 }
 

@@ -13,7 +13,8 @@ launch() {
 
 testLaunch() {
 	# echo test func
-	local points=$(getScreenPoints)
+	# local points=$(getScreenPoints)
+	ensureScreenOff
 	
 }
 

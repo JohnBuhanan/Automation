@@ -26,10 +26,7 @@ doCycle() {
 	local checkLimit=$1
 	
 	# Start with phone off.  If it is on, then turn it off.
-	if [ $(isScreenOn) == true ]; then
-		input keyevent KEYCODE_POWER # Turn phone off to start.
-		sleep 1
-	fi
+	ensureScreenOff
 	
 	echo "Screen is off. Turning on."
 	input keyevent KEYCODE_POWER # wakeup
