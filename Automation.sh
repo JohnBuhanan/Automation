@@ -1,7 +1,8 @@
 set -x
 
 launch() {
-	# checktime 
+	# checktime
+	date >> /data/Automation/automation.log
 	killAllApps
 	sleep 3
 	stop media && start media
@@ -12,8 +13,8 @@ launch() {
 
 testLaunch() {
 	# echo test func
-	# echo $(plusOrMinus 100 5)
-	advancedTouch 100 100
+	local points=$(getScreenPoints)
+	
 }
 
 while getopts tl args

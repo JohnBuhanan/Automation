@@ -53,6 +53,31 @@ randBetween() {
 	echo $rand1
 }
 
+getScreenPoints() {
+	/system/bin/uiautomator dump > /dev/null 2>&1
+	
+	local filePath="/sdcard/window_dump.xml"
+	local beforeText="text=\""
+	local afterText=" of 1,000"
+	
+	local screenPoints=$(findValueInFile $filePath "$beforeText" "$afterText")
+	
+	echo $screenPoints
+}
+
+# $1=filePath, $2=beforeText, $3=afterText
+findValueInFile() {
+	local filePath=$1
+	local beforeText=$2
+	local afterText=$3
+	
+	local text=$(grep -o ".*$afterText" $filePath)
+	text=${text##*$beforeText}
+	text=${text%$afterText*}
+	
+	echo $text
+}
+
 # $1=x
 translateX() {
 	let lgFuelX=$1*$inflateValue
