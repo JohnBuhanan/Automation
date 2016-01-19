@@ -46,16 +46,29 @@ doCycle() {
 	sleep 5
 }
 
+getScreenPoints() {
+	/system/bin/uiautomator dump > /dev/null 2>&1
+	
+	local filePath="/sdcard/window_dump.xml"
+	local beforeText="text=\""
+	local afterText=" of 1,000"
+	
+	local screenPoints=$(findValueInFile $filePath "$beforeText" "$afterText")
+	screenPoints="${screenPoints/,/}"
+	
+	echo $screenPoints
+}
+
 launchScreen() {
 	echo "Launching Screen..."
 	
 	# Loop until killed from outside
 	while :
 	do	
-		# Do ten swipes.
-		doNCycles 10
-		
 		# Do a swipe, but check the point limit.
 		doCycle true
+		
+		# Do ten swipes.
+		doNCycles 10
 	done
 }
