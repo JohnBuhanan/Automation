@@ -4,10 +4,10 @@ popQuizPressActivity="com.jutera.perkpopquiz.LaunchActivity"
 
 launchPopQuiz() {
 	echo "Launching Pop Quiz"
-	sleep 5
+	sleep 10
 	boundedTouch $device 96 382 217 400
-	sleep 1
+	sleep 2
 	boundedTouch $device 45 281 209 303
-	sleep 1
+	sleep 2
 	boundedTouch $device 58 240 270 253
 }
