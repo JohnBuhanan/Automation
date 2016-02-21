@@ -54,6 +54,8 @@ getScreenPoints() {
 	local afterText=" of 1,000"
 	
 	local screenPoints=$(findValueInFile $filePath "$beforeText" "$afterText")
+	
+	#1,000 -> 1000
 	screenPoints="${screenPoints/,/}"
 	
 	echo $screenPoints

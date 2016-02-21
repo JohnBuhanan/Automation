@@ -193,6 +193,25 @@ ensureScreen() {
 	fi
 }
 
+canPingGoogle() {
+	local googlePing=$(ping -c1 www.google.com | grep -o 64)
+	
+	if [ $googlePing == "64" ]; then
+		echo "true"
+	else
+		echo "false"
+	fi
+}
+
+ensureWifiConnection() {
+	if [ $(canPingGoogle) == "false" ]; then
+		svc wifi disable
+		sleep 1
+		svc wifi enable
+		sleep 3
+	fi
+}
+
 goHome() {
 	input keyevent KEYCODE_HOME
 }
@@ -200,6 +219,10 @@ goHome() {
 launchDevice() {
 	# Make sure it's on.
 	ensureScreenOn
+	
+	# Make sure it can reach internet.
+	ensureWifiConnection
+	
 	# Make sure it's on home?
 	goHome
 	sleep 1
