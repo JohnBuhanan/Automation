@@ -1,20 +1,9 @@
 set -x
 
-launch() {
-	# checktime
-	date >> /data/Automation/automation.log
-	killAllApps
-	sleep 3
-	stop media && start media
-	sleep 1
-	launchDevice
-	wait
-}
-
 testLaunch() {
-	# echo test func
-	# local points=$(getScreenPoints)
 	echo "Test Launch"
+	
+	updateCron
 	
 }
 
@@ -33,6 +22,7 @@ do
 			automationShellPath=${automationPath}/Automation
 			. ${automationShellPath}/lib/Common.sh
 			launch
+			# testLaunch
 			;;
         ?)
             exit 1

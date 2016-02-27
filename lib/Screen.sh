@@ -1,76 +1,79 @@
-screenPackage="com.perk.screen"
-screenMainActivity="com.perk.screen.LockActivity"
-screenPressActivity="com.facebook.FacebookActivity"
 
-phoneLimit=999
+lgHomeScreenActivity="com.lge.launcher2.Launcher"
+usbSettingsActivity="com.android.settings.UsbSettings"
 
-# $1=numLoops
-doNCycles() {
-	local i=1
-	local n=$1
-	while [ $i -ne $n ]
-	do
-		doCycle
-		true $(( i++ ))
-	done
+dumpPath="/sdcard/window_dump.xml"
+
+# $1=beforeText, $2=afterText
+grepValueOnScreen() {
+	dumpScreen
+	
+	local value=$(grepValueInFile $dumpPath "$beforeText" "$afterText")
+	
+	echo value
 }
 
-phoneReachedLimit() {
-	sh /data/Automation/ChangeAndroidId.sh
-	sh /data/Automation/Automation/Automation.sh -l &
-	exit 0
-}
-
-# $1=checkLimit
-doCycle() {
-	local checkLimit=$1
+# $1=valueToFind
+isValueOnScreen() {
+	local valueToFind=$1
+	local foundValue=$(grep -o "$valueToFind" $dumpPath)
 	
-	# Start with phone off.  If it is on, then turn it off.
-	ensureScreenOff
-	
-	echo "Screen is off. Turning on."
-	input keyevent KEYCODE_POWER # wakeup
-	sleep .5
-	# Did facebook login popup when we are trying to swipe?
-	input keyevent KEYCODE_BACK
-	sleep .5
-	
-	if [ $checkLimit == true ]; then
-		if [ $(getScreenPoints) -gt $phoneLimit ]; then
-			phoneReachedLimit
-		fi
+	if [ "$foundValue" == "$valueToFind" ]; then
+		echo "true"
+	else
+		echo "false"
 	fi
-	
-	# Swipe
-	advancedSwipe 152 438 304 438 400
-	sleep 5
 }
 
-getScreenPoints() {
+dumpScreen() {
 	/system/bin/uiautomator dump > /dev/null 2>&1
-	
-	local filePath="/sdcard/window_dump.xml"
-	local beforeText="text=\""
-	local afterText=" of 1,000"
-	
-	local screenPoints=$(findValueInFile $filePath "$beforeText" "$afterText")
-	
-	#1,000 -> 1000
-	screenPoints="${screenPoints/,/}"
-	
-	echo $screenPoints
 }
 
-launchScreen() {
-	echo "Launching Screen..."
+# $1=textToFind
+waitUntilTextFound() {
+	local textToFind=$1
+	local numberOfAttempts=0
+	local attemptLimit=60
 	
-	# Loop until killed from outside
 	while :
 	do	
-		# Do a swipe, but check the point limit.
-		doCycle true
+		dumpScreen
+		if [ $(isValueOnScreen "$textToFind") == "true" ]; then
+			break
+		fi
+		echo "Looping..."
 		
-		# Do ten swipes.
-		doNCycles 10
+		numberOfAttempts=$((numberOfAttempts + 1))
+		if [ $numberOfAttempts -gt $attemptLimit ]; then
+			break
+		fi
+		sleep 2
 	done
+	echo "DONE!"
+}
+
+# $1=device
+getCurrentActivity() {
+	local activity=$(dumpsys window windows | awk -F '/' '/mCurrentFocus=/ { gsub(/\}/,""); gsub(/\r/,""); printf("%s",$2) }')
+	echo $activity
+}
+
+isScreenOn() {
+	echo $(dumpsys power | grep mScreenOn= | grep -oE '(true|false)')
+}
+
+ensureScreenOn() {
+	ensureScreen true
+}
+
+ensureScreenOff() {
+	ensureScreen false
+}
+
+# $1=onOff
+ensureScreen() {
+	if [ $(isScreenOn) != $1 ]; then
+		input keyevent KEYCODE_POWER
+		sleep 1
+	fi
 }

@@ -1,26 +1,32 @@
+. ${automationShellPath}/lib/Logging.sh
+. ${automationShellPath}/lib/TouchCommands.sh
+. ${automationShellPath}/lib/Screen.sh
+. ${automationShellPath}/lib/HotFixes.sh
 . ${automationShellPath}/lib/ConfigureInstall.sh
+
 . ${automationShellPath}/lib/WordSearch.sh
 . ${automationShellPath}/lib/JetpackJourney.sh
 . ${automationShellPath}/lib/PopQuiz.sh
 . ${automationShellPath}/lib/Checkpoints.sh
 . ${automationShellPath}/lib/PerkTV.sh
-. ${automationShellPath}/lib/Screen.sh
+. ${automationShellPath}/lib/UnlockAndWin.sh
 
-lgHomeScreenActivity="com.lge.launcher2.Launcher"
-usbSettingsActivity="com.android.settings.UsbSettings"
+launch() {
+	# checktime
+	logStuff "automation" "Device launched."
+	killAllApps
+	sleep 3
+	hotFixes
+	sleep 1
+	launchDevice
+	wait
+}
 
-screenDensity="$(getprop ro.sf.lcd_density)"
-
-lgFuelScreenXResolution=320
-lgFuelScreenYResolution=480
-
-wmSize=$(wm size)
-wmSize=${wmSize:15}
-
-actualScreenXResolution="${wmSize%x*}"
-actualScreenYResolution="${wmSize#*x}"
-
-inflateValue=1000000
+standardHealthCheck() {
+	if [ $(getCurrentActivity) == $lgHomeScreenActivity ]; then
+		launch
+	fi
+}
 
 checktime() {
 	# extract hour from UNIX date
@@ -32,29 +38,8 @@ checktime() {
 	fi
 }
 
-# $1=originalValue, $2=deviation
-plusOrMinus() {
-	local originalValue=$1
-	local deviation=$2
-	
-	local rand=$(randBetween 0 $((deviation * 2)))
-	rand=$rand-$deviation
-	
-	echo $(($originalValue+$rand))
-}
-
-# $1=firstInt, $2=secondInt
-randBetween() {
-	local firstInt=$1
-	local secondInt=$2
-	
-	local rand1=$(shuf -i $firstInt-$secondInt -n 1)
-	
-	echo $rand1
-}
-
 # $1=filePath, $2=beforeText, $3=afterText
-findValueInFile() {
+grepValueInFile() {
 	local filePath=$1
 	local beforeText=$2
 	local afterText=$3
@@ -64,92 +49,6 @@ findValueInFile() {
 	text=${text%$afterText*}
 	
 	echo $text
-}
-
-# $1=x
-translateX() {
-	let lgFuelX=$1*$inflateValue
-	let xScreenPercent=$lgFuelX/$lgFuelScreenXResolution
-	let actualX=$xScreenPercent*$actualScreenXResolution/$inflateValue
-	
-	echo $actualX
-}
-
-# $1=x
-translateY() {
-	let lgFuelY=$1*$inflateValue
-	let yScreenPercent=$lgFuelY/$lgFuelScreenYResolution
-	let actualY=$yScreenPercent*$actualScreenYResolution/$inflateValue
-	
-	echo $actualY
-}
-
-translateTouch() {
-	local actualX=$(translateX $1)
-	local actualY=$(translateY $2)
-	
-	input tap $actualX $actualY
-}
-
-advancedSwipe() {
-	local x1=$(plusOrMinus $1 10)
-	local y1=$(plusOrMinus $2 10)
-	local x2=$(plusOrMinus $3 10)
-	local y2=$(plusOrMinus $4 10)
-	local duration=$5
-	
-	translateSwipe $x1 $y1 $x2 $y2 $duration
-}
-
-translateSwipe() {
-	local x1=$(translateX $1)
-	local y1=$(translateY $2)
-	local x2=$(translateX $3)
-	local y2=$(translateY $4)
-	local duration=$5
-	
-	input touchscreen swipe $x1 $y1 $x2 $y2 $duration
-}
-
-normalTouch() {
-	local x=$1
-	local y=$2
-	
-	translateTouch $x $y
-}
-
-advancedTouch() {
-	local x=$(plusOrMinus $1 5)
-	local y=$(plusOrMinus $2 5)
-	
-	normalTouch $x $y
-}
-
-boundedTouch() {
-	local x1=$1
-	local y1=$2
-	local x2=$3
-	local y2=$4
-	
-	local x=$(shuf -i $x1-$x2 -n 1)
-	local y=$(shuf -i $y1-$y2 -n 1)
-	
-	normalTouch $x $y
-}
-
-# $1=device
-getCurrentActivity() {
-	local activity=$(dumpsys window windows | awk -F '/' '/mCurrentFocus=/ { gsub(/\}/,""); gsub(/\r/,""); printf("%s",$2) }')
-	echo $activity
-}
-
-# $1=device, $2=package, $3=activity
-launchApp() {
-	local device=$1
-	local package=$2
-	local activity=$3
-	
-	adb -s $device shell am start -n "$package/$activity"
 }
 
 killLastSession() {
@@ -171,49 +70,6 @@ killAllApps() {
 	am force-stop $screenPackage >/dev/null 2>&1 &
 	killLastSession
 	wait
-}
-
-isScreenOn() {
-	echo $(dumpsys power | grep mScreenOn= | grep -oE '(true|false)')
-}
-
-ensureScreenOn() {
-	ensureScreen true
-}
-
-ensureScreenOff() {
-	ensureScreen false
-}
-
-#$1=onOff
-ensureScreen() {
-	if [ $(isScreenOn) != $1 ]; then
-		input keyevent KEYCODE_POWER
-		sleep 1
-	fi
-}
-
-canPingGoogle() {
-	local googlePing=$(ping -c1 www.google.com | grep -o 64)
-	
-	if [ $googlePing == "64" ]; then
-		echo "true"
-	else
-		echo "false"
-	fi
-}
-
-ensureWifiConnection() {
-	if [ $(canPingGoogle) == "false" ]; then
-		svc wifi disable
-		sleep 1
-		svc wifi enable
-		sleep 3
-	fi
-}
-
-goHome() {
-	input keyevent KEYCODE_HOME
 }
 
 launchDevice() {
@@ -263,3 +119,12 @@ launchDevice() {
 		return
     fi
 }
+
+# $1=device, $2=package, $3=activity
+# launchApp() {
+	# local device=$1
+	# local package=$2
+	# local activity=$3
+	
+	# adb -s $device shell am start -n "$package/$activity"
+# }
