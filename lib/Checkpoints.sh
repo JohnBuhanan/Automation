@@ -25,6 +25,11 @@ checkPointsHealthCheck() {
 	dumpScreen
 	standardHealthCheck
 	
+	if [ $(isValueOnScreen "Unfortunately") == "true" ]; then
+		logStuff $checkPointsLogName "Unfortunately checkpoints has stopped."
+		restartTheWholeThing
+	fi
+	
 	if [ $(isValueOnScreen "Can't play this video") == "true" ]; then
 		logStuff $checkPointsLogName "Can't play this video."
 		normalTouch 240 200
@@ -32,7 +37,7 @@ checkPointsHealthCheck() {
 	
 	if [ $(isValueOnScreen "Network Problem") == "true" ]; then
 		logStuff $checkPointsLogName "Network problem."
-		normalTouch 167 281
+		restartTheWholeThing
 	fi
 	
 	if [ $(isValueOnScreen "tab_videos") == "true" ]; then
