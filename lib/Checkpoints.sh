@@ -36,10 +36,10 @@ checkPointsHealthCheck() {
 	fi
 	
 	if [ $(isValueOnScreen "tab_videos") == "true" ]; then
-		launch
+		restartTheWholeThing
 	fi
 	
 	if [ $(isValueOnScreen "play_all_button") == "true" ]; then
-		launch
+		restartTheWholeThing
 	fi
 }

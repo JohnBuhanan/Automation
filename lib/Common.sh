@@ -24,8 +24,15 @@ launch() {
 
 standardHealthCheck() {
 	if [ $(getCurrentActivity) == $lgHomeScreenActivity ]; then
-		launch
+		restartTheWholeThing
 	fi
+	
+	ensureWifiConnection
+}
+
+restartTheWholeThing() {
+	sh /data/Automation/Automation/Automation.sh -l &
+	exit
 }
 
 checktime() {
@@ -76,12 +83,9 @@ launchDevice() {
 	# Make sure it's on.
 	ensureScreenOn
 	
-	# Make sure it can reach internet.
-	ensureWifiConnection
-	
 	# Make sure it's on home?
 	goHome
-	sleep 1
+	sleep 3
 	# Click in top left corner.
 	normalTouch 50 70
 	sleep 10

@@ -1,7 +1,7 @@
 hotFixes() {
 	mediaFix
 	ensureWifiConnection
-	updateCron
+	# updateCron
 }
 
 updateCron() {
