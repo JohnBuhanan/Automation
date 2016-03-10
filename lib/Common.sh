@@ -76,6 +76,8 @@ killAllApps() {
 	am force-stop $checkpointsPackage >/dev/null 2>&1 &
 	am force-stop $perkTVPackage >/dev/null 2>&1 &
 	am force-stop $screenPackage >/dev/null 2>&1 &
+	am force-stop "com.android.chrome" >/dev/null 2>&1 &
+	am force-stop "com.android.browser" >/dev/null 2>&1 &
 	wait
 	killLastSession
 }
