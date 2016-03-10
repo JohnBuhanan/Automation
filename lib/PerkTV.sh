@@ -16,7 +16,8 @@ launchPerkTV2() {
 	echo "Launching PerkTV"
 	# Static ad.
 	waitUntilTextFound "ib_fan_close"
-	boundedTouch 262 52 312 102
+	# boundedTouch 262 52 312 102
+	normalTouch 304 56
 	
 	# Watch & Earn title
 	waitUntilTextFound "Watch &amp; Earn"
