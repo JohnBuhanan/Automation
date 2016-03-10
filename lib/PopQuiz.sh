@@ -39,12 +39,12 @@ popQuizHealthCheck() {
 	fi
 	
 	if [ $(isValueOnScreen "WELCOME&#10;BACK!") == "true" ]; then
-		logStuff $checkPointsLogName "Errored back to welcome screen 2."
+		logStuff $popQuizLogName "Errored back to welcome screen 2."
 		restartTheWholeThing
 	fi
 	
 	# if [ $(isValueOnScreen "No Internet") == "true" ]; then
-		# logStuff $checkPointsLogName "WiFi Outage."
+		# logStuff $popQuizLogName "WiFi Outage."
 		# restartTheWholeThing
 	# fi
 }

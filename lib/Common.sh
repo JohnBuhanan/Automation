@@ -31,7 +31,8 @@ standardHealthCheck() {
 }
 
 restartTheWholeThing() {
-	sh /data/Automation/Automation/Automation.sh -l &
+	sh /data/Automation/Automation/Automation.sh -l & # > /data/Automation/Logs/running.log
+	sleep 2
 	exit
 }
 
@@ -71,12 +72,12 @@ killAllApps() {
 	am force-stop $jetpackJourneyPackage >/dev/null 2>&1 &
 	am force-stop $jetpackJourneyApplicationError >/dev/null 2>&1 &
 	am force-stop $popQuizPackage >/dev/null 2>&1 &
-	am force-stop $perkTVLivePackage >/dev/null 2>&1 &
+	# am force-stop $perkTVLivePackage >/dev/null 2>&1 &
 	am force-stop $checkpointsPackage >/dev/null 2>&1 &
 	am force-stop $perkTVPackage >/dev/null 2>&1 &
 	am force-stop $screenPackage >/dev/null 2>&1 &
-	killLastSession
 	wait
+	killLastSession
 }
 
 launchDevice() {
@@ -93,35 +94,35 @@ launchDevice() {
 	# See what is running.
 	activity=$(getCurrentActivity)
 	
-    if [ "$activity" = "$checkpointsPressActivity" ]; then
+    if [ "$activity" == "$checkpointsPressActivity" ]; then
         launchCheckpoints
 		return
     fi
 	
-	if [ "$activity" = "$perkTVPressActivity" ]; then
+	if [ "$activity" == "$perkTVPressActivity" ] || [ "$activity" == "com.juteralabs.perktv.activities.FANActivity" ]; then
         launchPerkTV
 		return
     fi
 	
-	if [ "$activity" = "$wordSearchPressActivity" ]; then
+	if [ "$activity" == "$wordSearchPressActivity" ] || [ "$activity" == "$wordSearchMainActivity" ]; then
         launchWordSearch
 		return
     fi
 	
-	if [ "$activity" = "$popQuizPressActivity" ]; then
+	if [ "$activity" == "$popQuizPressActivity" ]; then
         launchPopQuiz
 		return
     fi
 	
-	if [ "$activity" = "$jetpackJourneyPressActivity" ]; then
+	if [ "$activity" == "$jetpackJourneyPressActivity" ]; then
         launchJetpackJourney
 		return
     fi
 	
-	if [ "$activity" = "$screenPressActivity" ]; then
-        launchScreen
-		return
-    fi
+	# if [ "$activity" = "$screenPressActivity" ]; then
+        # launchScreen
+		# return
+    # fi
 }
 
 # $1=device, $2=package, $3=activity

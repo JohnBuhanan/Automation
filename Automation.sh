@@ -29,7 +29,7 @@ do
 			automationPath=/data/Automation
 			automationShellPath=${automationPath}/Automation
 			. ${automationShellPath}/lib/Common.sh
-			launch
+			launch #> /data/Automation/Logs/running.log 2>&1
 			# testLaunch
 			;;
         ?)
