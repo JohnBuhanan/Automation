@@ -14,7 +14,16 @@ launchPerkTV() {
 
 launchPerkTV2() {
 	echo "Launching PerkTV"
-	# Static ad.
+	
+	# Might be static ad.
+	dumpScreen
+	
+	if [ $(isValueOnScreen "ib_fan_close") == "true" ]; then
+		logStuff $perkTVLogName "Found static ad. Clicking ib_fan_close"
+		normalTouch 304 56
+		sleep 1
+	fi
+	
 	# waitUntilTextFound "ib_fan_close"
 	# normalTouch 304 56
 	
@@ -32,8 +41,8 @@ perkTVHealthCheck() {
 	standardHealthCheck
 	
 	if [ $(isValueOnScreen "ib_fan_close") == "true" ]; then
-		logStuff $checkPointsLogName "Found static ad. Clicking ib_fan_close"
-		boundedTouch 262 52 312 102
+		logStuff $perkTVLogName "Found static ad. Clicking ib_fan_close"
+		normalTouch 304 56
 	fi
 	
 	# if [ $(isValueOnScreen "Can't play this video") == "true" ]; then
