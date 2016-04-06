@@ -37,7 +37,7 @@ checkPointsHealthCheck() {
 	
 	if [ $(isValueOnScreen "text=\"X\"") == "true" ]; then
 		logStuff $checkPointsLogName "Static ad."
-		boundedTouch 430 0 480 50  ## Horizontal coordinates...
+		normalTouch 455 25  ## Horizontal coordinates...
 	fi
 	
 	

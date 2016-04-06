@@ -3,12 +3,14 @@ set -x
 testLaunch() {
 	echo "Test Launch"
 	
-	dumpScreen
+	# dumpScreen
 	
-	if [ $(isValueOnScreen "text=\"X\"") == "true" ]; then
-		logStuff $checkPointsLogName "Static ad."
-		boundedTouch 430 0 480 50
-	fi
+	# if [ $(isValueOnScreen "text=\"X\"") == "true" ]; then
+		# logStuff $checkPointsLogName "Static ad."
+		# boundedTouch 430 0 480 50
+	# fi
+	
+	perkTVHealthCheck
 }
 
 while getopts tl args

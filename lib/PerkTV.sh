@@ -43,12 +43,14 @@ perkTVHealthCheck() {
 	if [ $(isValueOnScreen "ib_fan_close") == "true" ]; then
 		logStuff $perkTVLogName "Found static ad. Clicking ib_fan_close"
 		normalTouch 304 56
+		return
 	fi
 	
-	# if [ $(isValueOnScreen "Can't play this video") == "true" ]; then
-		# logStuff $checkPointsLogName "Can't play this video."
-		# normalTouch 240 200
-	# fi
+	if [ $(isValueOnScreen "text=\"X\"") == "true" ]; then
+		logStuff $perkTVLogName "Found"
+		normalTouch 455 25
+		return
+	fi
 }
 
 # ib_fan_close
