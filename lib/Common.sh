@@ -11,6 +11,8 @@
 . ${automationShellPath}/lib/PerkTV.sh
 . ${automationShellPath}/lib/UnlockAndWin.sh
 
+commonLogName="common"
+
 launch() {
 	# checktime
 	logStuff "automation" "Device launched."
@@ -24,6 +26,13 @@ launch() {
 
 standardHealthCheck() {
 	if [ $(getCurrentActivity) == $lgHomeScreenActivity ]; then
+		restartTheWholeThing
+	fi
+	
+	if [ $(isValueOnScreen "Do you want to close it?") == "true" ]; then
+		logStuff $commonLogName "Something wasn't responding."
+		normalTouch 230 283
+		sleep 3
 		restartTheWholeThing
 	fi
 	

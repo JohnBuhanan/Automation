@@ -42,9 +42,4 @@ popQuizHealthCheck() {
 		logStuff $popQuizLogName "Errored back to welcome screen 2."
 		restartTheWholeThing
 	fi
-	
-	# if [ $(isValueOnScreen "No Internet") == "true" ]; then
-		# logStuff $popQuizLogName "WiFi Outage."
-		# restartTheWholeThing
-	# fi
 }
