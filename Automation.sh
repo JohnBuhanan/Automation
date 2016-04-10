@@ -3,14 +3,10 @@ set -x
 testLaunch() {
 	echo "Test Launch"
 	
-	dumpScreen
-	
-	if [ $(isValueOnScreen "Do you want to close it?") == "true" ]; then
-		logStuff $popQuizLogName "Perk Pop Quiz isn't responding."
-		normalTouch 230 283
-		sleep 3
-		restartTheWholeThing
-	fi
+	# dumpScreen
+	# perkTVHealthCheck
+	ensureWifiConnection
+	# ensureWifiConnection
 }
 
 while getopts tl args

@@ -15,17 +15,15 @@ launchPerkTV() {
 launchPerkTV2() {
 	echo "Launching PerkTV"
 	
-	# Might be static ad.
+	sleep 5
+	
+	# Might be static ad.  But might not?
 	dumpScreen
 	
 	if [ $(isValueOnScreen "ib_fan_close") == "true" ]; then
-		logStuff $perkTVLogName "Found static ad. Clicking ib_fan_close"
 		normalTouch 304 56
 		sleep 1
 	fi
-	
-	# waitUntilTextFound "ib_fan_close"
-	# normalTouch 304 56
 	
 	# Watch & Earn title
 	waitUntilTextFound "Watch &amp; Earn"
@@ -41,16 +39,20 @@ perkTVHealthCheck() {
 	standardHealthCheck
 	
 	if [ $(isValueOnScreen "ib_fan_close") == "true" ]; then
-		logStuff $perkTVLogName "Found static ad. Clicking ib_fan_close"
-		normalTouch 304 56
+		logStuff $perkTVLogName "Back on the start screen with the static ad."
+		restartTheWholeThing
+		return
+	fi
+	
+	if [ $(isValueOnScreen "Watch &amp; Earn") == "true" ]; then
+		logStuff $perkTVLogName "Back on the start screen without the static ad."
+		restartTheWholeThing
 		return
 	fi
 	
 	if [ $(isValueOnScreen "text=\"X\"") == "true" ]; then
-		logStuff $perkTVLogName "Found"
+		logStuff $perkTVLogName "Found static ad to close."
 		normalTouch 455 25
 		return
 	fi
 }
-
-# ib_fan_close
