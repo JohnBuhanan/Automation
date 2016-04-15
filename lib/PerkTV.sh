@@ -16,7 +16,7 @@ launchPerkTV() {
 launchPerkTV2() {
 	echo "Launching PerkTV"
 	
-	sleep 5
+	sleep 10
 	
 	# Might be static ad.  But might not?
 	dumpScreen
