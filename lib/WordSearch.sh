@@ -35,4 +35,9 @@ wordSearchHealthCheck() {
 		logStuff $wordSearchLogName "No Connection."
 		restartTheWholeThing
 	fi
+	
+	if [ $(isValueOnScreen "AdBlock Detected!") == "true" ]; then
+		logStuff $wordSearchLogName "AdBlock Detected!"
+		restartTheWholeThing
+	fi
 }
