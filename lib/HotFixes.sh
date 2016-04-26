@@ -40,21 +40,41 @@ mediaFix() {
 	# fi
 # }
 
-isConnectedToRouter() {
-	local netstatsWlanInfo=$(dumpsys netstats | grep -E 'iface=wlan.*networkId')
+isPingError() {
+	local googlePing=$(/system/bin/ping -c1 www.google.com 2>&1 | grep -o "unknown host")
 	
-	if [ "$netstatsWlanInfo" != "" ]; then
+	if [ "$googlePing" == "unknown host" ]; then
 		echo "true"
 	else
 		echo "false"
 	fi
 }
 
+isDisconnectedToRouter() {
+	local netstatsWlanInfo=$(dumpsys netstats | grep -E 'iface=wlan.*networkId')
+	
+	if [ "$netstatsWlanInfo" == "" ]; then
+		echo "true"
+	else
+		echo "false"
+	fi
+}
+
+cycleWiFi() {
+	svc wifi disable
+	sleep 2
+	svc wifi enable
+	sleep 1
+}
+
 ensureWifiConnection() {
-	if [ $(isConnectedToRouter) == "false" ]; then
-		logStuff "wifiOutage" "WiFi outage."
-		svc wifi disable
-		sleep 2
-		svc wifi enable
+	if [ $(isDisconnectedToRouter) == "true" ]; then
+		logStuff "wifiOutage" "Disconnected from router."
+		cycleWiFi
+	fi
+	
+	if [ $(isPingError) == "true" ]; then
+		logStuff "wifiOutage" "Lost ability to ping."
+		cycleWiFi
 	fi
 }
