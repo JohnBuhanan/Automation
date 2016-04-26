@@ -5,7 +5,8 @@ testLaunch() {
 	
 	# dumpScreen
 	# perkTVHealthCheck
-	ensureWifiConnection
+	# ensureWifiConnection
+	waitUntilTextFound "Unfortunately"
 	# ensureWifiConnection
 }
 

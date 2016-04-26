@@ -27,6 +27,8 @@ checkPointsHealthCheck() {
 	
 	if [ $(isValueOnScreen "Unfortunately") == "true" ]; then
 		logStuff $checkPointsLogName "Unfortunately checkpoints has stopped."
+		normalTouch 175 250
+		sleep 2
 		restartTheWholeThing
 	fi
 	
