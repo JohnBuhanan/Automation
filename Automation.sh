@@ -3,11 +3,7 @@ set -x
 testLaunch() {
 	echo "Test Launch"
 	
-	# dumpScreen
-	# perkTVHealthCheck
-	# ensureWifiConnection
-	waitUntilTextFound "Unfortunately"
-	# ensureWifiConnection
+	
 }
 
 while getopts tl args

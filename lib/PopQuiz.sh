@@ -15,9 +15,18 @@ launchPopQuiz() {
 
 launchPopQuiz2() {
 	echo "Launching Pop Quiz"
+	
 	waitUntilTextFound "WELCOME&#10;BACK!"
 	boundedTouch $device 96 382 217 400
 	sleep 2
+	
+	dumpScreen # Temp patch for update bug.
+	if [ $(isValueOnScreen "btn_update_app_overlay_close") == "true" ]; then
+		logStuff $popQuizLogName "btn_update_app_overlay_close"
+		normalTouch 240 109
+		sleep 2
+	fi
+	
 	boundedTouch $device 45 281 209 303
 	waitUntilTextFound "Play Solo"
 	boundedTouch $device 58 240 270 253
