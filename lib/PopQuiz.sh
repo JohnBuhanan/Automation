@@ -51,4 +51,12 @@ popQuizHealthCheck() {
 		logStuff $popQuizLogName "Errored back to welcome screen 2."
 		restartTheWholeThing
 	fi
+	
+	if [ $(isValueOnScreen "Unfortunately, Perk") == "true" ]; then
+		# [160,259][304,307]
+		logStuff $popQuizLogName "Unfortunately..."
+		normalTouch 232 283
+		sleep 2
+		restartTheWholeThing
+	fi
 }

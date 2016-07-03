@@ -3,7 +3,14 @@ set -x
 testLaunch() {
 	echo "Test Launch"
 	
-	
+	dumpScreen
+	if [ $(isValueOnScreen "Unfortunately, Perk") == "true" ]; then
+		# [160,259][304,307]
+		logStuff $popQuizLogName "Unfortunately..."
+		normalTouch 232 283
+		sleep 2
+		restartTheWholeThing
+	fi
 }
 
 while getopts tl args
