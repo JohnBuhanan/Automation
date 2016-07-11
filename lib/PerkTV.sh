@@ -38,6 +38,13 @@ launchPerkTV2() {
 	boundedTouch 34 101 299 216
 }
 
+clearCachePerkTV() {
+	rm -r /data/data/com.juteralabs.perktv/cache
+	rm -r /data/data/com.juteralabs.perktv/files
+	rm -r /data/data/com.juteralabs.perktv/code_cache
+	rm -r /data/data/com.juteralabs.perktv/databases
+}
+
 perkTVHealthCheck() {
 	dumpScreen
 	standardHealthCheck

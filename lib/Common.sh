@@ -20,8 +20,16 @@ launch() {
 	sleep 3
 	hotFixes
 	sleep 1
+	clearCaches
+	sleep 1
 	launchDevice
 	wait
+}
+
+clearCaches() {
+	clearCachePerkTV
+	clearCachePopQuiz
+	clearCacheWordSearch
 }
 
 standardHealthCheck() {

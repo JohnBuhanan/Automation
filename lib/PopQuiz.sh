@@ -32,6 +32,14 @@ launchPopQuiz2() {
 	boundedTouch $device 58 240 270 253
 }
 
+clearCachePopQuiz() {
+	rm -r /data/data/com.jutera.perkpopquiz.aphone/app_webview
+	rm -r /data/data/com.jutera.perkpopquiz.aphone/cache
+	rm -r /data/data/com.jutera.perkpopquiz.aphone/databases
+	rm -r /data/data/com.jutera.perkpopquiz.aphone/files
+	rm -r /data/data/com.jutera.perkpopquiz.aphone/code_cache
+}
+
 popQuizHealthCheck() {
 	dumpScreen
 	local currentActivity=$(getCurrentActivity)
@@ -56,6 +64,15 @@ popQuizHealthCheck() {
 		# [160,259][304,307]
 		logStuff $popQuizLogName "Unfortunately..."
 		normalTouch 232 283
+		sleep 2
+		restartTheWholeThing
+	fi
+	
+	if [ $(isValueOnScreen "Perk Pop Quiz isn't responding. Do you want to close it?") == "true" ]; then
+		# [160,259][304,307]
+		logStuff $popQuizLogName "Perk Pop Quiz isn't responding. Do you want to close it?"
+		# [208,259][304,307]
+		normalTouch 256 283
 		sleep 2
 		restartTheWholeThing
 	fi

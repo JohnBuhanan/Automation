@@ -21,6 +21,15 @@ launchWordSearch2() {
 	boundedTouch $device 45 217 150 296
 }
 
+clearCacheWordSearch() {
+	rm -r /data/data/com.perk.wordsearch.aphone/app_data
+	rm -r /data/data/com.perk.wordsearch.aphone/app_webview
+	rm -r /data/data/com.perk.wordsearch.aphone/cache
+	rm -r /data/data/com.perk.wordsearch.aphone/files
+	rm -r /data/data/com.perk.wordsearch.aphone/code_cache
+	rm -r /data/data/com.perk.wordsearch.aphone/databases
+}
+
 wordSearchHealthCheck() {
 	dumpScreen
 	# local currentActivity=$(getCurrentActivity)
