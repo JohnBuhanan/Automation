@@ -108,7 +108,7 @@ launchDevice() {
 	sleep 3
 	# Click in top left corner.
 	normalTouch 50 70
-	sleep 10
+	sleep 15
 	
 	# See what is running.
 	activity=$(getCurrentActivity)
@@ -128,7 +128,7 @@ launchDevice() {
 		return
     fi
 	
-	if [ "$activity" == "$popQuizPressActivity" ]; then
+	if [ "$activity" == "$popQuizPressActivity" ] || [ "$activity" == "$popQuizMainActivity" ]; then
         launchPopQuiz
 		return
     fi
