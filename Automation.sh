@@ -4,10 +4,9 @@ testLaunch() {
 	echo "Test Launch"
 	
 	dumpScreen
-	if [ $(isValueOnScreen "Unfortunately, Perk") == "true" ]; then
-		# [160,259][304,307]
-		logStuff $popQuizLogName "Unfortunately..."
-		normalTouch 232 283
+	if [ $(isValueOnScreen "CheckPoints isn't responding. Do you want to close it?") == "true" ]; then
+		logStuff $checkPointsLogName "CheckPoints isn't responding. Do you want to close it?"
+		boundedTouch 240 179 384 227
 		sleep 2
 		restartTheWholeThing
 	fi

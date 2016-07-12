@@ -55,4 +55,11 @@ checkPointsHealthCheck() {
 	if [ $(isValueOnScreen "play_all_button") == "true" ]; then
 		restartTheWholeThing
 	fi
+	
+	if [ $(isValueOnScreen "CheckPoints isn't responding. Do you want to close it?") == "true" ]; then
+		logStuff $checkPointsLogName "CheckPoints isn't responding. Do you want to close it?"
+		boundedTouch 240 179 384 227
+		sleep 2
+		restartTheWholeThing
+	fi
 }
