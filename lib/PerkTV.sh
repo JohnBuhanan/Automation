@@ -32,9 +32,9 @@ launchPerkTV2() {
 	logStuff $perkTVLogName "Watch &amp; Earn"
 	boundedTouch 55 160 108 203
 	
-	# Anastasia Date
-	waitUntilTextFound "Anastasia Date"
-	logStuff $perkTVLogName "Anastasia Date"
+	# We used to hunt for Anastasia Date specifically, but now we hunt for video thumbnails.
+	waitUntilTextFound "sv_movieTrailers"
+	logStuff $perkTVLogName "sv_movieTrailers"
 	boundedTouch 34 101 299 216
 }
 
@@ -58,6 +58,12 @@ perkTVHealthCheck() {
 	if [ $(isValueOnScreen "Watch &amp; Earn") == "true" ]; then
 		logStuff $perkTVHealthCheckLogName "Back on the start screen without the static ad."
 		restartTheWholeThing
+		return
+	fi
+	
+	if [ $(isValueOnScreen "sv_movieTrailers") == "true" ]; then
+		logStuff $perkTVHealthCheckLogName "Back on the video thumbnail section."
+		boundedTouch 34 101 299 216
 		return
 	fi
 	
