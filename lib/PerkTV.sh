@@ -53,7 +53,7 @@ updatePerkTV() {
 	boundedTouch 168 337 288 373
 	
 	# Should be installed now. Wait a bit and restart.
-	sleep 5
+	waitUntilTextFound "OPEN"
 	restartTheWholeThing
 }
 
