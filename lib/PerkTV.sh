@@ -16,16 +16,18 @@ launchPerkTV() {
 launchPerkTV2() {
 	echo "Launching PerkTV"
 	
-	sleep 10
+	# Static ad.
+	waitUntilTextFound "ib_fan_close"
+	logStuff $perkTVLogName "ib_fan_close"
+	normalTouch 304 56
+	sleep 2
 	
-	# Might be static ad.  But might not?
+	# Check for update?
 	dumpScreen
-	
-	if [ $(isValueOnScreen "ib_fan_close") == "true" ]; then
-		logStuff $perkTVLogName "ib_fan_close"
-		normalTouch 304 56
-		sleep 1
+	if [ $(isValueOnScreen "UPDATE") == "true" ]; then
+		updatePerkTV
 	fi
+	
 	
 	# Watch & Earn title
 	waitUntilTextFound "Watch &amp; Earn"
@@ -36,6 +38,23 @@ launchPerkTV2() {
 	waitUntilTextFound "sv_movieTrailers"
 	logStuff $perkTVLogName "sv_movieTrailers"
 	boundedTouch 34 101 299 216
+}
+
+updatePerkTV() {
+	logStuff $perkTVLogName "Clicking UPDATE in PerkTV app"
+	boundedTouch 20 362 300 402
+		
+	waitUntilTextFound "Downloads"
+	logStuff $perkTVLogName "Clicking UPDATE on Google play store"
+	boundedTouch 165 283 304 317
+	
+	waitUntilTextFound "ACCEPT"
+	logStuff $perkTVLogName "Clicking Accept in Google Play store"
+	boundedTouch 168 337 288 373
+	
+	# Should be installed now. Wait a bit and restart.
+	sleep 5
+	restartTheWholeThing
 }
 
 clearCachePerkTV() {
