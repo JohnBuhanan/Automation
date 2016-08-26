@@ -17,10 +17,10 @@ launchPerkTV2() {
 	echo "Launching PerkTV"
 	
 	# Static ad.
-	waitUntilTextFound "ib_fan_close"
-	logStuff $perkTVLogName "ib_fan_close"
-	normalTouch 304 56
-	sleep 2
+	# waitUntilTextFound "ib_fan_close"
+	# logStuff $perkTVLogName "ib_fan_close"
+	# normalTouch 304 56
+	# sleep 2
 	
 	# Check for update?
 	dumpScreen
