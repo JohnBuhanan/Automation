@@ -1,35 +1,26 @@
 popQuizPackage="com.jutera.perkpopquiz.aphone"
-popQuizMainActivity="com.jutera.perkpopquiz.SplashActivity"
+popQuizSplashActivity="com.jutera.perkpopquiz.SplashActivity"
+popQuizMainActivity="com.jutera.perkpopquiz.WelcomeBackActivity"
 popQuizPressActivity="com.jutera.perkpopquiz.LaunchActivity"
 popQuizLogName="popQuiz"
 
 launchPopQuiz() {
 	launchPopQuiz2
-	
-	while :
-	do
-		sleep 20
-		popQuizHealthCheck
-	done
 }
 
 launchPopQuiz2() {
 	echo "Launching Pop Quiz"
 	
-	waitUntilTextFound "WELCOME&#10;BACK!"
-	boundedTouch $device 96 382 217 400
+	waitUntilTextFound "WELCOME BACK"
+	boundedTouch $device 70 344 252 366
 	sleep 2
 	
-	dumpScreen # Temp patch for update bug.
-	if [ $(isValueOnScreen "btn_update_app_overlay_close") == "true" ]; then
-		logStuff $popQuizLogName "btn_update_app_overlay_close"
-		normalTouch 240 109
-		sleep 2
-	fi
+	boundedTouch $device 22 233 40 257
+	sleep 2
+	boundedTouch $device 18 92 49 117
 	
-	boundedTouch $device 45 281 209 303
 	waitUntilTextFound "Play Solo"
-	boundedTouch $device 58 240 270 253
+	boundedTouch $device 82 284 228 297
 }
 
 clearCachePopQuiz() {
