@@ -6,11 +6,11 @@ wordSearchLogName="wordSearch"
 launchWordSearch() {
 	launchWordSearch2
 	
-	while :
-	do
-		sleep 20
-		wordSearchHealthCheck
-	done
+	#while :
+	#do
+	#	sleep 20
+	#	wordSearchHealthCheck
+	#done
 }
 
 launchWordSearch2() {
